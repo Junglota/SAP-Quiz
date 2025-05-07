@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP S/4HANA Cloud Public Edition Exam</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div id="start-screen">
+            <h1>SAP S/4HANA Cloud Public Edition Exam</h1>
+            <p>This exam contains 80 questions about SAP S/4HANA Cloud Public Edition.</p>
+            <p>Click the Start button to begin the exam.</p>
+            <button id="start-btn">Start</button>
+        </div>
+        
+        <div id="question-screen" class="hide">
+            <h2 id="question-title">Question</h2>
+            <div id="question-text"></div>
+            <div id="options-container"></div>
+            <div class="navigation">
+                <button id="prev-btn" class="nav-btn">Previous</button>
+                <div id="question-counter">Question 1 of 80</div>
+                <button id="next-btn" class="nav-btn">Next</button>
+            </div>
+        </div>
+        
+        <div id="results-screen" class="hide">
+            <h2>Exam Results</h2>
+            <div id="score-container">
+                <p>Your score: <span id="score">0</span>%</p>
+            </div>
+            <div id="results-container"></div>
+            <button id="retry-btn">Retry Exam</button>
+        </div>
+    </div>
+    
+    <script src="questions.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
