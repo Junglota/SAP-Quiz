@@ -15,7 +15,8 @@ const retryBtn = document.getElementById('retry-btn');
 
 // App state
 let currentQuestionIndex = 0;
-let userAnswers = new Array(questions.length).fill([]);
+let randomizedQuestions = [];
+let userAnswers = [];
 const totalQuestions = questions.length;
 const pointsPerQuestion = 100 / totalQuestions; // Each question is worth the same amount
 
@@ -25,22 +26,37 @@ prevBtn.addEventListener('click', showPreviousQuestion);
 nextBtn.addEventListener('click', showNextQuestion);
 retryBtn.addEventListener('click', restartExam);
 
+// Function to shuffle an array (Fisher-Yates algorithm)
+function shuffleArray(array) {
+    const newArray = [...array]; // Create a copy of the array
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]]; // Swap elements
+    }
+    return newArray;
+}
+
 // Functions
 function startExam() {
+    // Randomize questions
+    randomizedQuestions = shuffleArray(questions);
+    
+    // Initialize userAnswers array with empty arrays for each question
+    userAnswers = new Array(randomizedQuestions.length).fill([]);
+    
     startScreen.classList.add('hide');
     questionScreen.classList.remove('hide');
+    currentQuestionIndex = 0;
     showQuestion(currentQuestionIndex);
 }
 
 function restartExam() {
     resultsScreen.classList.add('hide');
     startScreen.classList.remove('hide');
-    currentQuestionIndex = 0;
-    userAnswers = new Array(questions.length).fill([]);
 }
 
 function showQuestion(index) {
-    const question = questions[index];
+    const question = randomizedQuestions[index];
     questionTitle.textContent = `Question ${index + 1}`;
     
     // Display question text with note if exists
@@ -129,7 +145,7 @@ function showPreviousQuestion() {
 }
 
 function showNextQuestion() {
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < randomizedQuestions.length - 1) {
         currentQuestionIndex++;
         showQuestion(currentQuestionIndex);
     } else {
@@ -140,7 +156,7 @@ function showNextQuestion() {
 function updateNavButtons() {
     prevBtn.disabled = currentQuestionIndex === 0;
     
-    if (currentQuestionIndex === questions.length - 1) {
+    if (currentQuestionIndex === randomizedQuestions.length - 1) {
         nextBtn.textContent = 'Finish';
     } else {
         nextBtn.textContent = 'Next';
@@ -150,7 +166,7 @@ function updateNavButtons() {
 function calculateScore() {
     let totalScore = 0;
     
-    const results = questions.map((question, index) => {
+    const results = randomizedQuestions.map((question, index) => {
         const correctAnswers = question.correctAnswers;
         const userSelectedAnswers = userAnswers[index] || [];
         
